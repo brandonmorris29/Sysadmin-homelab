@@ -35,7 +35,7 @@ organizational units, user accounts, security groups, and GPOs.
 6. Within the securoty groups folder I created 4 security groups called Executive-Users, Finance-Users, HR-Users, and IT-Admins
 7. Added each user to their appropriate security group
 
-(C)Create Group policy objects
+(C) Create Group policy objects
 
 1. Window search for gpmc.msc
 2. Right-click on corp.local > Create GPO and name password policy.

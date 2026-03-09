@@ -12,46 +12,50 @@ organizational units, user accounts, security groups, and GPOs.
 - Group Policy Object (GPO) creation and linking
 - User and group management
 
-
-## Steps Taken
-(A)Lab and Domain Controller Setup
-
-1.Download and installed Virtualbox on my PC
-2.Download Windows Server 2022 Evaluation ISO from the Microsoft Evaluation Center
-3.Create 3 VM's with 2CPU's, 4GB RAM, 60GB disk
-4.Install Windows Server 2022 Desktop experience and did the next 5 steps for my Windows Server2022
-5.Open Server Manager > Add Roles and Features
-6.Select Active Directory Domain Services and install
-7.Promote Server to domain controller
-8.Set DSRM password, click through defaults ,and restart server
+Steps Taken
+(A) Lab and Domain Controller Setup
+- Downloaded and installed VirtualBox on my PC.
+- Downloaded the Windows Server 2022 Evaluation ISO from the Microsoft Evaluation Center.
+- Created three VMs, each with 2 CPUs, 4 GB RAM, and a 60 GB disk.
+- Installed Windows Server 2022 Desktop Experience on one VM and completed the next steps on that server.
+- Opened Server Manager → Add Roles and Features.
+- Selected and installed Active Directory Domain Services.
+- Promoted the server to a domain controller.
+- Set the DSRM password, accepted the defaults, and restarted the server.
 
 (B) Create Company Structure
+- Opened Active Directory Users and Computers (ADUC).
+- Right‑clicked my domain (corp.local) → New → Organizational Unit.
+- Created a Corp OU with a nested NY OU and a Users OU inside it.
+- Created four OUs: Executives, Finance, HR, IT, and created two test users in each OU.
+- Created a Groups OU in the corp.local domain with a nested Security Groups OU.
+- Inside the Security Groups OU, created four security groups:
+- Executive-Users
+- Finance-Users
+- HR-Users
+- IT-Admins
+- Added each test user to the appropriate security group.
 
-1. Open ADUC
-2. Right-click my domain (corp.local) > New > Organizational Unit
-3. Created Corp Oganizational unit with NY OU nested inside and Users Ou nested inside of that.
-4. Created 4 OU's called Executives, Finance, HR, IT, and created 2 test users for each OU
-5. Created A OU called Groups in the corp.local domain with a nested OU called Security Groups
-6. Within the securoty groups folder I created 4 security groups called Executive-Users, Finance-Users, HR-Users, and IT-Admins
-7. Added each user to their appropriate security group
+(C) Create Group Policy Objects
+- Searched for and opened gpmc.msc.
+- Right‑clicked corp.local → Create a GPO, named it Password Policy.
+- Navigated to Computer Configuration → Windows Settings → Security Settings → Account Policies.
+- Configured:
+- Minimum password length: 12 characters
+- Password complexity: Enabled
+- Account lockout after 5 attempts
+- Created another GPO named Desktop Restrictions.
+- Navigated to User Configuration → Administrative Templates → Control Panel and enabled “Prohibit access to Control Panel and PC settings.”
+- Joined a Windows 11 VM to the corp.local domain and ran gpupdate /force to apply the policies.
+- Restarted the Windows 11 client and confirmed the policies were applied using gpresult /r.
+- Verified the Control Panel restriction — attempting to open it produced the message:
+“This operation has been cancelled due to restrictions in effect on this computer. Please contact your administrator.”
+- Verified the password policy by attempting to change the password to a 4‑character value and receiving an error confirming the policy was enforced.
 
-(C) Create Group policy objects
+Lessons Learned
+During this lab, I encountered an issue where the Desktop Restrictions GPO was applying to my Administrator account, preventing access to the Control Panel. I realized the GPO was linked at the domain root, meaning it applied to all users, including administrators.
+To fix this:
+- I removed the GPO link from the domain root.
+- I linked it only to the Executives, Finance, and HR OUs.
+- After logging out and back into the server and running gpupdate /force, I confirmed that the Control Panel was accessible again for the Administrator account.
 
-1. Window search for gpmc.msc
-2. Right-click on corp.local > Create GPO and name password policy.
-3. Navigate to Computer Config > Windows Settings > Security Settings > Account Policies
-4. From here we set a minimum password length of 12, complexity required, and lockout after 5 attempts
-5. Another GPO is created and named Destop Restircitons
-6. For this policy we navigate to User Config > Admin Templates > Control Panel > hide Control Panel for non-admins
-7. On a VM with Windows 11 I join the device to corp.locals domain and run a gpupDATE /force to forcefully update the group policy
-8. The Win 11 client gets restarted abd I confirm the policies being applied by running a gpresult /r in command prompt
-9. When navigating to control panel there's an error message stating " This operarion has been cancelled due to restrictions in effect on this computer Please contact your administrator" (policy works)
-10. I also check that the password policy is being applied by running ctrl+alt+del. I attempt to change the password with a 4 letter password and I'm greeted with an error telling me the password policy is working.
-## Screenshots
-
-
-## Lessons Learned
-During this lab encountered and issue where the control panel policy was beeing applied to my administrator profile as well not allowing me to access this tool. 
-I then realized the policy was linked at the root domain meaning everyone will have with policy enforced on their profile.
-I deleted the GPO from root, then linked it to the Executive, Finance, and HR OU's.
-I then logged out and back into my Windows server, ran a gpupdate /force, and confirmed that control panel was working.

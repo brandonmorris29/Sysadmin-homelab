@@ -38,7 +38,7 @@ organizational units, user accounts, security groups, and GPOs.
 (C)Create Group policy objects
 
 1. Window search for gpmc.msc
-2. Right-click on corp.local > Create GPO and name password policy
+2. Right-click on corp.local > Create GPO and name password policy.
 3. Navigate to Computer Config > Windows Settings > Security Settings > Account Policies
 4. From here we set a minimum password length of 12, complexity required, and lockout after 5 attempts
 5. Another GPO is created and named Destop Restircitons

@@ -52,7 +52,12 @@ Steps Taken
 “This operation has been cancelled due to restrictions in effect on this computer. Please contact your administrator.”
 - Verified the password policy by attempting to change the password to a 4‑character value and receiving an error confirming the policy was enforced.
 
+
+Screenshots
+(A) 1. Active Directory Server Manager
+
 Lessons Learned
+
 During this lab, I encountered an issue where the Desktop Restrictions GPO was applying to my Administrator account, preventing access to the Control Panel. I realized the GPO was linked at the domain root, meaning it applied to all users, including administrators.
 To fix this:
 - I removed the GPO link from the domain root.
